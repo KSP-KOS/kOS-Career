@@ -1,0 +1,27 @@
+﻿Goal: enable KOS to fully automate a career KSP game
+
+Since KOS cannot run without a vessel, I imagine that most of this will be done 
+using a "controller vessel," perhaps sitting on the runway and setting up rocket launches.
+
+Necessary functionality:
+* assign crew to launches
+* crew transfers (not strictly necessary because of kos-eva cheats)
+
+-------------------- completed
+* enumerate contracts
+* accept contracts
+* purchase tech tree nodes
+* recover non-current vessel (might have bugs...)
+* building upgrades
+* might need some UI controls to close science window, etc
+
+-------------------- polish
+* purchasing parts in tech tree nodes (hard mode)
+* enumerate links in tech tree (probably new RDNode type)
+* enumerate available kerbals
+* hire kerbals
+* activate strategies
+
+-------------------- no work necessary
+* eva support (use kos-eva for this, but it probably needs improvements e.g. boot script for kerbals)
+* eva activate nearby parts
