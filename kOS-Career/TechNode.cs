@@ -27,6 +27,7 @@ namespace kOS.AddOns.kOSCareer
 			AddSuffix("TECHID", new Suffix<StringValue>(() => m_node.techID));
 			AddSuffix("SCIENCECOST", new Suffix<ScalarIntValue>(() => m_node.scienceCost));
 			AddSuffix("STATE", new Suffix<StringValue>(() => m_node.state.ToString()));
+			AddSuffix("TITLE", new Suffix<StringValue>(() => ResearchAndDevelopment.GetTechnologyTitle(m_node.techID)));
 
 			AddSuffix("RESEARCH", new NoArgsVoidSuffix(Research));
 		}
