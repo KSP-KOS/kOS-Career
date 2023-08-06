@@ -14,12 +14,12 @@ Necessary functionality:
 * recover non-current vessel (might have bugs...)
 * building upgrades
 * might need some UI controls to close science window, etc
+* enumerate available kerbals
+* hire kerbals
 
 -------------------- polish
 * purchasing parts in tech tree nodes (hard mode)
 * enumerate links in tech tree (probably new RDNode type)
-* enumerate available kerbals
-* hire kerbals
 * activate strategies
 
 -------------------- no work necessary

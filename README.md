@@ -68,6 +68,42 @@ Returns a list of [`TECHNODE`](#technode)s that have all prerequisites met and c
 
 Returns a list of the [`FACILITY`](#facility)s at KSC.
 
+#### `:ALLCREW()`
+
+Returns a list of all [`CrewMember`](https://ksp-kos.github.io/KOS/structures/vessels/crewmember.html)s.  Note that this function has side effects: it may respawn dead kerbals and refresh the applicant list.
+
+#### `:ASSIGNEDCREW()`
+
+Returns a list of [`CrewMember`](https://ksp-kos.github.io/KOS/structures/vessels/crewmember.html)s that are currently assigned (in a vessel).
+
+#### `:AVAILABLECREW()`
+
+Returns a list of [`CrewMember`](https://ksp-kos.github.io/KOS/structures/vessels/crewmember.html)s that are available for a new launch.
+
+#### `:APPLICANTS()`
+
+Returns a list of [`CrewMember`](https://ksp-kos.github.io/KOS/structures/vessels/crewmember.html)s that can be hired.  Note that this function has side effects: it may respawn dead kerbals and refresh the applicant list.
+
+#### `:HIREAPPLICANT(CrewMember)`
+
+Tries to hire an available [`CrewMember`](https://ksp-kos.github.io/KOS/structures/vessels/crewmember.html).  Returns a boolean indicating whether it succeeded.  Use `CANHIRE` to check if this will succeed.
+
+#### `:FIRECREW(CrewMember)`
+
+Tries to fire a [`CrewMember`](https://ksp-kos.github.io/KOS/structures/vessels/crewmember.html).  Returns a boolean indicating whether it succeeded (only available [`CrewMember`](https://ksp-kos.github.io/KOS/structures/vessels/crewmember.html)s can be fired).
+
+#### `:CREWLIMIT`
+
+Returns the current maximum number of crew.
+
+#### `:HIRECOST`
+
+Returns the current funds cost of hiring a new [`CrewMember`](https://ksp-kos.github.io/KOS/structures/vessels/crewmember.html).
+
+#### `:CANHIRE`
+
+Returns a boolean indicating whether you can hire a new kerbal.  This checks the hire cost, crew limit, and other game difficulty options.
+
 ### `CONTRACT`
 
 A structure that represents a contract.
@@ -247,6 +283,11 @@ Gets the human-readable and localized name of the tech node.
 Researches the tech node.  Throws an exception if this is not possible, for example if it is already researched or if you do not have enough science points.
 
 ## ChangeLog
+
+### v0.2.0
+
+* Added crew methods
+* Update compatibility for 1.8-1.12
 
 ### v0.1.0
 

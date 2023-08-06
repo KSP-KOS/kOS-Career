@@ -8,6 +8,8 @@ using KSP.UI.Screens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -23,7 +25,7 @@ namespace kOS.AddOns.kOSCareer
 			InitializeSuffixes();
 		}
 
-		public void InitializeSuffixes()
+		new public void InitializeSuffixes()
 		{
 			AddSuffix("CLOSEDIALOGS", new NoArgsVoidSuffix(CloseDialogs));
 
@@ -43,6 +45,107 @@ namespace kOS.AddOns.kOSCareer
 
 			AddSuffix("FACILITIES", new NoArgsSuffix<ListValue<Facility>>(Facilities));
 			AddSuffix("DebugFacilities", new NoArgsVoidSuffix(DebugFacilities));
+
+			AddSuffix("ALLCREW", new NoArgsSuffix<ListValue<CrewMember>>(GetAllCrew));
+			AddSuffix("ASSIGNEDCREW", new NoArgsSuffix<ListValue<CrewMember>>(() => ConvertCrewList(HighLogic.CurrentGame.CrewRoster.Crew.Where(pcm => pcm.rosterStatus == ProtoCrewMember.RosterStatus.Assigned))));
+			AddSuffix("AVAILABLECREW", new NoArgsSuffix<ListValue<CrewMember>>(() => ConvertCrewList(HighLogic.CurrentGame.CrewRoster.Crew.Where(pcm => pcm.rosterStatus == ProtoCrewMember.RosterStatus.Available))));
+			AddSuffix("APPLICANTS", new NoArgsSuffix<ListValue<CrewMember>>(GetApplicants));
+			AddSuffix("HIREAPPLICANT", new OneArgsSuffix<BooleanValue, CrewMember>(HireCrew));
+			AddSuffix("FIRECREW", new OneArgsSuffix<BooleanValue, CrewMember>(FireCrew));
+			AddSuffix("CREWLIMIT", new NoArgsSuffix<ScalarIntValue>(GetCrewLimit));
+			AddSuffix("HIRECOST", new NoArgsSuffix<ScalarDoubleValue>(GetHireCost));
+			AddSuffix("CANHIRE", new NoArgsSuffix<BooleanValue>(CanHire));
+		}
+
+		private BooleanValue CanHire()
+		{
+			var activeCrews = HighLogic.CurrentGame.CrewRoster.GetActiveCrewCount();
+			if (activeCrews < GetCrewLimit())
+			{
+				CurrencyModifierQuery currencyModifierQuery = CurrencyModifierQuery.RunQuery(TransactionReasons.CrewRecruited, 0f - GameVariables.Instance.GetRecruitHireCost(activeCrews), 0f, 0f);
+				if ((HighLogic.CurrentGame != null && HighLogic.CurrentGame.Mode == Game.Modes.MISSION && HighLogic.CurrentGame.Parameters.CustomParams<Expansions.Missions.MissionParamsExtras>().astronautHiresAreFree) || currencyModifierQuery.CanAfford())
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		private ScalarDoubleValue GetHireCost()
+		{
+			var activeCrews = HighLogic.CurrentGame.CrewRoster.GetActiveCrewCount();
+			return GameVariables.Instance.GetRecruitHireCost(activeCrews);
+		}
+
+		private ListValue<CrewMember> GetAllCrew()
+		{
+			HighLogic.CurrentGame.CrewRoster.Update(Planetarium.GetUniversalTime());
+			return ConvertCrewList(HighLogic.CurrentGame.CrewRoster.Crew);
+		}
+
+		private ListValue<CrewMember> GetApplicants()
+		{
+			HighLogic.CurrentGame.CrewRoster.Update(Planetarium.GetUniversalTime());
+			return ConvertCrewList(HighLogic.CurrentGame.CrewRoster.Applicants);
+		}
+
+		private BooleanValue FireCrew(CrewMember crewMember)
+		{
+			try
+			{
+				ProtoCrewMember pcm = crewMember.crewMember;
+				if (pcm.type == ProtoCrewMember.KerbalType.Crew && pcm.rosterStatus == ProtoCrewMember.RosterStatus.Available)
+				{
+					HighLogic.CurrentGame.CrewRoster.SackAvailable(pcm);
+					return pcm.type == ProtoCrewMember.KerbalType.Applicant;
+				}
+			}
+			catch(Exception ex)
+			{
+				Debug.LogException(ex);
+			}
+
+			return false;
+		}
+
+		private ScalarIntValue GetCrewLimit()
+		{
+			return GameVariables.Instance.GetActiveCrewLimit(ScenarioUpgradeableFacilities.GetFacilityLevel(SpaceCenterFacility.AstronautComplex));
+		}
+
+		private BooleanValue HireCrew(CrewMember crewMember)
+		{
+			try
+			{
+				if (CanHire())
+				{
+					ProtoCrewMember pcm = crewMember.crewMember;
+
+					if (pcm.type == ProtoCrewMember.KerbalType.Applicant)
+					{
+						HighLogic.CurrentGame.CrewRoster.HireApplicant(pcm);
+						return pcm.type == ProtoCrewMember.KerbalType.Crew;
+					}
+				}
+			}
+			catch(Exception ex)
+			{
+				Debug.LogException(ex);
+			}
+
+			return false;
+		}
+
+		
+
+		private ListValue<CrewMember> ConvertCrewList(IEnumerable<ProtoCrewMember> crewList)
+		{
+			var result = new ListValue<CrewMember>();
+			foreach (var pcm in crewList)
+			{
+				result.Add(new CrewMember(pcm, shared));
+			}
+			return result;
 		}
 
 		private void DebugFacilities()
