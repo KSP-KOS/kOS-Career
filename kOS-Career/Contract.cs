@@ -2,6 +2,8 @@
 using kOS.Safe.Encapsulation.Suffixes;
 using kOS.Safe.Exceptions;
 using kOS.Safe.Utilities;
+using kOS.Suffixed;
+using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,9 +50,14 @@ namespace kOS.AddOns.kOSCareer
 			AddSuffix("ACCEPT", new NoArgsVoidSuffix(Accept));
 			AddSuffix("DECLINE", new NoArgsVoidSuffix(Decline));
 			AddSuffix("CANCEL", new NoArgsVoidSuffix(Cancel));
-		}
 
-		private ListValue<KOSContractParameter> GetParameters()
+            AddSuffix("COMPLETE", new OneArgsSuffix<StringValue>(Complete, "Completes the Parameter"));
+            AddSuffix("INCOMPLETE", new OneArgsSuffix<StringValue>(Incomplete, "Resets the Parameter"));
+            AddSuffix("FAIL", new OneArgsSuffix<StringValue>(Fail, "Fails the Parameter"));
+
+        }
+
+        private ListValue<KOSContractParameter> GetParameters()
 		{
 			var result = new ListValue<KOSContractParameter>();
 
@@ -79,9 +86,55 @@ namespace kOS.AddOns.kOSCareer
 			if (m_contract.ContractState != Contracts.Contract.State.Offered) throw new KOSException("Contract cannot be accepted");
 			m_contract.Accept();
 		}
-	}
 
-	[KOSNomenclature("ContractParameter")]
+        private void SetParameter(String action, String parameterTitle)
+        {
+            foreach (var parameter in m_contract.AllParameters)
+            {
+                if (parameter.Title == parameterTitle && parameter.Title.StartsWith("KOS"))
+                {
+                    switch (action)
+                    {
+                        case "COMPLETE":
+                            if (parameter.state.ToString() != "Complete")
+                            {
+                                parameter.SetComplete();
+                            }
+                            break;
+                        case "INCOMPLETE":
+                            if (parameter.state.ToString() != "Incomplete")
+                            {
+                                parameter.SetIncomplete();
+                            }
+                            break;
+                        case "FAIL":
+                            if (parameter.state.ToString() != "Failed")
+                            {
+                                parameter.SetFailed();
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+        private void Complete(StringValue parameterTitle)
+        {
+            SetParameter("COMPLETE", parameterTitle);
+        }
+
+        private void Incomplete(StringValue parameterTitle)
+        {
+            SetParameter("INCOMPLETE", parameterTitle);
+        }
+
+        private void Fail(StringValue parameterTitle)
+        {
+            SetParameter("FAIL", parameterTitle);
+        }
+    }
+
+
+    [KOSNomenclature("ContractParameter")]
 	class KOSContractParameter : kOS.Safe.Encapsulation.Structure
 	{
 		Contracts.ContractParameter m_parameter;
@@ -103,7 +156,7 @@ namespace kOS.AddOns.kOSCareer
 			AddSuffix("TITLE", new Suffix<StringValue>(() => m_parameter.Title));
 			AddSuffix("NOTES", new Suffix<StringValue>(() => m_parameter.Notes));
 			AddSuffix("PARAMETERS", new Suffix<ListValue<KOSContractParameter>>(GetParameters));
-		}
+        }
 
 		private ListValue<KOSContractParameter> GetParameters()
 		{
@@ -116,5 +169,5 @@ namespace kOS.AddOns.kOSCareer
 
 			return result;
 		}
-	}
+    }
 }
