@@ -103,6 +103,20 @@ namespace kOS.AddOns.kOSCareer
 			AddSuffix("TITLE", new Suffix<StringValue>(() => m_parameter.Title));
 			AddSuffix("NOTES", new Suffix<StringValue>(() => m_parameter.Notes));
 			AddSuffix("PARAMETERS", new Suffix<ListValue<KOSContractParameter>>(GetParameters));
+
+			AddSuffix("ID", new Suffix<StringValue>(() => m_parameter.ID));
+			AddSuffix("CHEAT_SET_STATE", new OneArgsSuffix<StringValue>(SetState, "Sets the parameter state (COMPLETE|INCOMPLETE|FAILED)"));
+		}
+
+		private void SetState(StringValue action)
+		{
+  			var newState = action.ToString().ToEnum<Contracts.ParameterState>();
+  			switch (newState)
+			{
+				case Contracts.ParameterState.Incomplete: m_parameter.SetIncomplete(); break;			
+				case Contracts.ParameterState.Complete:   m_parameter.SetComplete(); break;
+				case Contracts.ParameterState.Failed:     m_parameter.SetFailed(); break;
+			}
 		}
 
 		private ListValue<KOSContractParameter> GetParameters()
