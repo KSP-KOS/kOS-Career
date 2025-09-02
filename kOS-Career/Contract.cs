@@ -105,25 +105,17 @@ namespace kOS.AddOns.kOSCareer
 			AddSuffix("PARAMETERS", new Suffix<ListValue<KOSContractParameter>>(GetParameters));
 
 			AddSuffix("ID", new Suffix<StringValue>(() => m_parameter.ID));
-			AddSuffix("CHEAT_SET_STATE", new OneArgsSuffix<StringValue>(SetState, "Sets the parameter state (COMPLETE|INCOMPLETE|FAIL)"));
+			AddSuffix("CHEAT_SET_STATE", new OneArgsSuffix<StringValue>(SetState, "Sets the parameter state (COMPLETE|INCOMPLETE|FAILED)"));
 		}
 
 		private void SetState(StringValue action)
 		{
-			switch (action)
+  			var newState = action.ToString().ToEnum<Contracts.ParameterState>();
+  			switch (newState)
 			{
-				case "COMPLETE":
-					if (m_parameter.State.ToString() == "Completed") throw new KOSException("Parameter cannot set to Complete");
-					m_parameter.SetComplete();
-					break;
-				case "INCOMPLETE":
-					if (m_parameter.State.ToString() == "Incomplete") throw new KOSException("Parameter cannot be set to Incomplete");
-					m_parameter.SetIncomplete();
-					break;
-				case "FAIL":
-					if (m_parameter.State.ToString() == "Failed") throw new KOSException("Parameter cannot be set to Failed");
-					m_parameter.SetFailed();
-					break;
+				case Contracts.ParameterState.Incomplete: m_parameter.SetIncomplete(); break;			
+				case Contracts.ParameterState.Complete:   m_parameter.SetComplete(); break;
+				case Contracts.ParameterState.Failed:     m_parameter.SetFailed(); break;
 			}
 		}
 
