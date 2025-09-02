@@ -1,7 +1,7 @@
-﻿/.vs
-/kOS-Career/.vs/kOS-Career/v15
-/kOS-Career/bin
-/kOS-Career/obj
+﻿.vs/
+bin/
+obj/
 *.user
 /Releases
-/packages/Krafs.Publicizer.1.0.3
+/GameData/kOS-Career/*.dll
+/GameData/kOS-Career/*.pdb
