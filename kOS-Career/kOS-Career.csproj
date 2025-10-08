@@ -1,14 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="kOS-Career.version.props" />
   <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net4.8</TargetFramework>
     <OutputType>Library</OutputType>
-    <Version>0.2.0.0</Version>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateKSPAssemblyAttribute>True</GenerateKSPAssemblyAttribute>
     <GenerateKSPAssemblyDependencyAttributes>True</GenerateKSPAssemblyDependencyAttributes>
     <BinariesOutputRelativePath>GameData\kOS-Career</BinariesOutputRelativePath>
   </PropertyGroup>
+  <ItemGroup>
+    <KSPVersionFile Include=".">
+      <Destination>$(RepoRootPath)\GameData\kOS-Career\kOS-Career.version</Destination>
+      <URL>https://github.com/ksp-kos/KOS-career/releases/latest/download/kOS-Career.version</URL>
+	  <Download>https://github.com/ksp-kos/KOS-career/releases/latest</Download>
+	  <KSP_Version_Min>1.12.3</KSP_Version_Min>
+    </KSPVersionFile>
+  </ItemGroup>
   <ItemGroup>
     <Reference Include="kOS">
       <HintPath>$(KSPRoot)/GameData/kOS/Plugins/kOS.dll</HintPath>
