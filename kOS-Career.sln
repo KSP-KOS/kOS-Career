@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.136
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kOS-Career", "kOS-Career\kOS-Career.csproj", "{FB990819-5408-4748-BEB5-D425FAF9378A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "kOS-Career", "kOS-Career\kOS-Career.csproj", "{FB990819-5408-4748-BEB5-D425FAF9378A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{47EBA339-41F0-4F47-8049-44D46796905B}"
 	ProjectSection(SolutionItems) = preProject
-		GameData\kOS-Career\kos-career.version = GameData\kOS-Career\kos-career.version
+		CHANGELOG.md = CHANGELOG.md
 		README.md = README.md
 		todo.txt = todo.txt
 	EndProjectSection
