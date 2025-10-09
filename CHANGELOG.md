@@ -1,4 +1,4 @@
-## Unreleased
+## 0.3.0.0 - 2025-10-09
 
 * Add `CHEAT_SET_STATE` and `ID` suffixes to contract parameters (thanks @KerbalOne)
 
