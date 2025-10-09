@@ -1,9 +1,0 @@
-{
-  "NAME": "kOS-Career",
-  "VERSION": "1.2.0.0",
-  "URL": "https://github.com/ksp-kos/KOS-career/releases/latest/download/kOS-Career.version",
-  "DOWNLOAD": "https://github.com/ksp-kos/KOS-career/releases/latest",
-  "KSP_VERSION": "1.12",
-  "KSP_VERSION_MIN": "1.12.3",
-  "KSP_VERSION_MAX": "1.12"
-}
