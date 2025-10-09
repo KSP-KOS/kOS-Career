@@ -12,7 +12,6 @@ CKAN is recommended.  For a manual install, merge the contents of the GameData f
 * [`CONTRACTPARAMETER`](#contractparameter)
 * [`FACILITY`](#facility)
 * [`TECHNODE`](#technode)
-* [ChangeLog](#changelog)
 
 ### `ADDONS:CAREER`
 
@@ -223,6 +222,14 @@ Gets any notes for the parameter.
 
 Gets a list of [`CONTRACTPARAMETER`](#contractparameter) structures representing any sub-objectives of the parameter.
 
+#### `:ID`
+
+Returns the internal ID of the parameter.
+
+#### `:CHEAT_SET_STATE(String)`
+
+Sets the state of the parameter.  Valid values are `"Incomplete"`, `"Complete"`, and `"Failed"`.  Throws an exception if the value is invalid or if the parameter cannot be set to that state.
+
 ### `FACILITY`
 
 A structure that represents one of the buildings at KSC.
@@ -282,13 +289,3 @@ Gets the human-readable and localized name of the tech node.
 
 Researches the tech node.  Throws an exception if this is not possible, for example if it is already researched or if you do not have enough science points.
 
-## ChangeLog
-
-### v0.2.0
-
-* Added crew methods
-* Update compatibility for 1.8-1.12
-
-### v0.1.0
-
-* initial release, compatible with KSP 1.8.x - 1.10.x
